@@ -35,10 +35,13 @@
  ********************************************************************/
 int boot_reason_charge_only(void)
 {
-    char data[1024], powerup_reason[32];
+    char data[1024], powerup_reason[32], prop[PROPERTY_VALUE_MAX];
     int fd, n;
     char *x, *pwrup_rsn;
     unsigned long reason = 0;
+
+    property_get("ro.mot.charge_only_mode", prop, "1");
+    if (atoi(prop) != 1) return 0;
 
     fd = open("/proc/bootinfo", O_RDONLY);
     if (fd < 0) return 0;
